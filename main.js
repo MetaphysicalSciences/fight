@@ -19,64 +19,66 @@ function changeCharacterFrame() {
         characterImage.style.transform = "scaleX(1)";
     }
 
+    // Determine the image source path based on the current animation and frame
     if (animationType === 'walk') {
-        frameNumber = currentFrame.toString().padStart(3, "0");
-        characterImage.src = `images/walk/tile${frameNumber}.png`;
+        // Walking frames (tile060.png to tile075.png)
+        characterImage.src = `walk/tile${(currentFrame + 60).toString().padStart(3, "0")}.png`;
     } else if (animationType === 'punch') {
-        frameNumber = currentFrame.toString().padStart(3, "0");
-        characterImage.src = `images/punch/tile${frameNumber}.png`;
+        // Punching frames (tile076.png to tile099.png)
+        characterImage.src = `punch/tile${(currentFrame + 76).toString().padStart(3, "0")}.png`;
     } else if (animationType === 'test1') {
-        frameNumber = currentFrame.toString().padStart(3, "0");
-        characterImage.src = `images/test1/tile${frameNumber}.png`;
+        // Secret animation frames (tile100.png to tile115.png)
+        characterImage.src = `test1/tile${(currentFrame + 100).toString().padStart(3, "0")}.png`;
     } else {
-        characterImage.src = `images/idle/tile${frameNumber}.png`;
+        // Idle frames (tile000.png to tile059.png)
+        characterImage.src = `idle/tile${frameNumber}.png`;
     }
 }
 
 // Function to handle walking
 function walk(direction) {
     if (direction === 'right') {
-        isFlipped = false;
+        isFlipped = false;  // Facing right
     } else if (direction === 'left') {
-        isFlipped = true;
+        isFlipped = true;   // Facing left
     }
 
-    animationType = 'walk';
-    currentFrame = (currentFrame + 1) % totalWalkFrames;
+    animationType = 'walk';  // Switch to walking animation
+    currentFrame = (currentFrame + 1) % totalWalkFrames;  // Loop through walk frames
     changeCharacterFrame();
 }
 
 // Function to handle punching
 function punch() {
-    animationType = 'punch';
-    currentFrame = (currentFrame + 1) % totalPunchFrames;
+    animationType = 'punch';  // Switch to punch animation
+    currentFrame = (currentFrame + 1) % totalPunchFrames;  // Loop through punch frames
     changeCharacterFrame();
 }
 
 // Function to handle the secret animation when 'P' is pressed
 function secretAnimation() {
-    animationType = 'test1';
-    currentFrame = (currentFrame + 1) % totalSecretFrames;
+    animationType = 'test1';  // Switch to secret animation
+    currentFrame = (currentFrame + 1) % totalSecretFrames;  // Loop through secret frames
     changeCharacterFrame();
 }
 
 // Listen for key presses to control movement and animations
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') {
-        walk('right');
+        walk('right');  // Move right when arrow right key is pressed
     } else if (event.key === 'ArrowLeft') {
-        walk('left');
+        walk('left');   // Move left when arrow left key is pressed
     } else if (event.key === ' ') {
-        punch();
+        punch();        // Punch when spacebar is pressed
     } else if (event.key === 'p' || event.key === 'P') {
-        secretAnimation();
+        secretAnimation();  // Activate secret animation when 'P' is pressed
     }
 });
 
 // Start the idle animation when no key is pressed
 setInterval(() => {
     if (animationType === 'idle') {
-        currentFrame = (currentFrame + 1) % totalIdleFrames;
+        currentFrame = (currentFrame + 1) % totalIdleFrames;  // Loop through idle frames
         changeCharacterFrame();
     }
-}, 100);  // Adjust the speed of the idle animation here
+}, 100);  // Adjust the speed of the idle animation here (lower is faster)
